@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Livre {
 
     private String isbn;
@@ -5,7 +7,7 @@ public class Livre {
     private String auteur;
     private String genre;
     private int anneePublication;
-    private int exemplaires;
+    private ArrayList<Exemplaire> exemplaires;
 
     public Livre() {}
 
@@ -15,7 +17,7 @@ public class Livre {
         String auteur,
         String genre,
         int anneePublication,
-        int exemplaires
+        ArrayList<Exemplaire> exemplaires
     ) {
         this.isbn = isbn;
         this.titre = titre;
@@ -65,11 +67,23 @@ public class Livre {
         return this.anneePublication;
     }
 
-    public void setExemplaires(int exemplaires) {
+    public void setExemplaires(ArrayList<Exemplaire> exemplaires) {
         this.exemplaires = exemplaires;
     }
 
-    public int getExemplaires() {
+    public ArrayList<Exemplaire> getExemplaires() {
         return this.exemplaires;
+    }
+
+    public void ajouterExemplaire(Exemplaire e) {
+        this.exemplaires.add(e);
+    }
+
+    public void supprimerExemplaire(int id) {
+        // récupérer l'exemplaire à partir de son id ensuite supprimer avec ArrayList.remove()
+    }
+
+    public int getNbExemplaires() {
+        return this.exemplaires.size();
     }
 }
