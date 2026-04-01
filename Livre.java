@@ -80,7 +80,8 @@ public class Livre {
     }
 
     public void supprimerExemplaire(int id) {
-        // récupérer l'exemplaire à partir de son id ensuite supprimer avec ArrayList.remove()
+        Exemplaire e = exemplaires.get(id);
+        exemplaires.remove(e);
     }
 
     public int getNbExemplaires() {
