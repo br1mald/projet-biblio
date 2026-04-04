@@ -40,23 +40,23 @@ public ArrayList<Emprunt> getEmprunts() {
     return this.emprunts;
 }
 
-public int setId(int id) {
-    return this.id;
+public void setId(int id) {
+    this.id = id;
 }
-public String setNom(String nom) {
-    return this.nom;
+public void setNom(String nom) {
+    this.nom = nom;
 }
-public String setPrenom(String prenom) {
-    return this.prenom;
+public void setPrenom(String prenom) {
+    this.prenom = prenom;
 }
-public String setAdresse(String adresse) {
-    return this.adresse;
+public void setAdresse(String adresse) {
+    this.adresse = adresse;
 }
-public LocalDate setDateInscription(LocalDate dateInscription) {
-    return this.dateInscription;
+public void setDateInscription(LocalDate dateInscription) {
+    this.dateInscription = dateInscription;
 }
-public ArrayList<Emprunt> setEmprunts(ArrayList<Emprunt> emprunts) {
-    return this.emprunts;
+public void setEmprunts(ArrayList<Emprunt> emprunts) {
+    this.emprunts = emprunts;
 }
 
 public Emprunt emprunter(Exemplaire ex, int idEmprunt,int dateEmprunt) {
