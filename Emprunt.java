@@ -10,7 +10,14 @@ public class Emprunt {
     private LocalDate dateRetourPrevue;
     private LocalDate dateRetourEffective;
 
-    public Emprunt() {}
+    public Emprunt() {
+    this.id = 0;
+    this.membre = null;
+    this.exemplaire = null;
+    this.dateEmprunt = LocalDate.now();
+    this.dateRetourPrevue = this.dateEmprunt.plusDays(14); 
+    this.dateRetourEffective = null;
+}
 
     public Emprunt(int id, Membre membre, Exemplaire exemplaire, int dureeJours) {
         if (!exemplaire.isDisponible()) {
