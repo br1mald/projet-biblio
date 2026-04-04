@@ -56,7 +56,7 @@ public class LivreDAO {
     // UPDATE
     public void modifier(Livre livreModifie) throws SQLException {
         String sql =
-            "UPDATE livre SET titre = ?, auteur = ?, genre = ?, anneePublication = ? WHERE isbn = ?";
+            "UPDATE livre SET titre = ?, auteur = ?, genre = ?, annee_publication = ? WHERE isbn = ?";
 
         try (
             Connection conn = ConnexionBD.getConnection();

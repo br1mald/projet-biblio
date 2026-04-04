@@ -46,6 +46,16 @@ public class Livre {
         this.exemplaires = new ArrayList<>();
     }
 
+    public Livre(Livre autreLivre) {
+        // pour la modification
+        this.isbn = autreLivre.isbn;
+        this.titre = autreLivre.titre;
+        this.auteur = autreLivre.auteur;
+        this.genre = autreLivre.genre;
+        this.anneePublication = autreLivre.anneePublication;
+        this.exemplaires = new ArrayList<>(autreLivre.exemplaires); // nouvelle liste pour éviter des problèmes en mémoire
+    }
+
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
