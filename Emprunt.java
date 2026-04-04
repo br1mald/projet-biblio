@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -76,6 +75,3 @@ public class Emprunt {
                ", enRetard=" + estEnRetard() + "}";
     }
 }
-=======
-public class Emprunt{}
->>>>>>> 7824a687ccffc041e5f510361e51ae676f5aeeb6
