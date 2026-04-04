@@ -9,7 +9,9 @@ public class Livre {
     private int anneePublication;
     private ArrayList<Exemplaire> exemplaires;
 
-    public Livre() {}
+    public Livre() {
+        this.exemplaires = new ArrayList<>();
+    }
 
     public Livre(
         String isbn,
@@ -80,8 +82,9 @@ public class Livre {
     }
 
     public void supprimerExemplaire(int id) {
-        Exemplaire e = exemplaires.get(id);
-        exemplaires.remove(e);
+        for (Exemplaire e : this.exemplaires) {
+            if (e.getId() == id) exemplaires.remove(e);
+        }
     }
 
     public int getNbExemplaires() {
