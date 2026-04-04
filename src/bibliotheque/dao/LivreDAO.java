@@ -15,7 +15,7 @@ public class LivreDAO {
     // CREATE
     public void ajouter(Livre livre) throws SQLException {
         String sql =
-            "INSERT INTO livre (isbn, titre, auteur, genre, annee) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO livre (isbn, titre, auteur, genre, annee_publication) VALUES (?, ?, ?, ?, ?)";
         try (
             Connection conn = ConnexionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)
@@ -44,7 +44,7 @@ public class LivreDAO {
                     rs.getString("titre"),
                     rs.getString("auteur"),
                     rs.getString("genre"),
-                    rs.getInt("annee"),
+                    rs.getInt("annee_publication"),
                     new ArrayList<Exemplaire>()
                 );
                 livres.add(l);

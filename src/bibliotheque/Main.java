@@ -24,7 +24,9 @@ public class Main {
 
             // Lister tous les livres
             List<Livre> livres = livreDAO.listerTous();
-            livres.forEach(System.out::println);
+            livres.forEach(nouveauLivre ->
+                System.out.println(nouveauLivre.getTitre() + " ajouté")
+            );
         } catch (SQLException e) {
             System.out.println("Erreur");
             e.printStackTrace();
