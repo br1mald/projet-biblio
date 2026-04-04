@@ -1,13 +1,13 @@
 <<<<<<< HEAD
 public class Vehicule {
 
-    // Attributs 
+    // Attributs
     private String immatriculation;
     private int capacite;
     private boolean disponible;
     private double kilometrage;
 
-    // Constructeurs 
+    // Constructeurs
 
     // Constructeur sans paramètre
     public Vehicule() {
@@ -30,7 +30,7 @@ public class Vehicule {
         return this.disponible;
     }
 
-    // Getters et Setters 
+    // Getters et Setters
 
     public String getImmatriculation() {
         return immatriculation;
@@ -82,13 +82,13 @@ public class Vehicule {
 =======
 public class Vehicule {
 
-    // Attributs 
+    // Attributs
     private String immatriculation;
     private int capacite;
     private boolean disponible;
     private double kilometrage;
 
-    // Constructeurs 
+    // Constructeurs
 
     // Constructeur sans paramètre
     public Vehicule() {
@@ -111,7 +111,7 @@ public class Vehicule {
         return this.disponible;
     }
 
-    // Getters et Setters 
+    // Getters et Setters
 
     public String getImmatriculation() {
         return immatriculation;
