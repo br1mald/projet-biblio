@@ -48,7 +48,7 @@ public class Emprunt {
             throw new IllegalStateException("Retour déjà effectué !");
         }
         this.dateRetourEffective = LocalDate.now();
-        exemplaire.marquerRetour();
+        exemplaire.marquerRetourne();
     }
 
     public int getId() { return id; }
