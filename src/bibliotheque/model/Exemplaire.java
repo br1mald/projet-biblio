@@ -1,5 +1,15 @@
+package src.bibliotheque.model;
+
 public class Exemplaire {
-      // Attributs 
+
+    public enum EtatExemplaire {
+        NEUF,
+        BON,
+        ABIME,
+        HORS_SERVICE,
+    }
+
+    // Attributs
     private int id;
     private EtatExemplaire etat;
     private boolean disponible;
@@ -7,13 +17,13 @@ public class Exemplaire {
 
     // Constructeurs
 
-    // Constructeur sans paramètre 
+    // Constructeur sans paramètre
     public Exemplaire() {
         this.disponible = true;
         this.etat = EtatExemplaire.NEUF;
     }
 
-    // Constructeur avec paramètres 
+    // Constructeur avec paramètres
     public Exemplaire(int id, EtatExemplaire etat, Livre livre) {
         this.id = id;
         this.etat = etat;
@@ -79,6 +89,16 @@ public class Exemplaire {
     public String toString() {
         String titrelivre = (livre != null) ? livre.getTitre() : "Non défini";
         String dispo = disponible ? "Oui" : "Non";
-        return "Exemplaire [id=" + id + ", etat=" + etat + ", disponible=" + dispo + ", livre=" + titrelivre + "]";
+        return (
+            "Exemplaire [id=" +
+            id +
+            ", etat=" +
+            etat +
+            ", disponible=" +
+            dispo +
+            ", livre=" +
+            titrelivre +
+            "]"
+        );
     }
 }

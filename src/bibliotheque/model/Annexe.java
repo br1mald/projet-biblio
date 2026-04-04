@@ -1,3 +1,5 @@
+package src.bibliotheque.model;
+
 public class Annexe {
 
     private int id;

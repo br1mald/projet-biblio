@@ -1,12 +1,14 @@
+package src.bibliotheque.model;
+
 public class Vehicule {
 
-    // Attributs 
+    // Attributs
     private String immatriculation;
     private int capacite;
     private boolean disponible;
     private double kilometrage;
 
-    // Constructeurs 
+    // Constructeurs
 
     // Constructeur sans paramètre
     public Vehicule() {
@@ -29,7 +31,7 @@ public class Vehicule {
         return this.disponible;
     }
 
-    // Getters et Setters 
+    // Getters et Setters
 
     public String getImmatriculation() {
         return immatriculation;
@@ -74,7 +76,16 @@ public class Vehicule {
     // Affichage d'un véhicule
     public String toString() {
         String dispo = disponible ? "Oui" : "Non";
-        return "Vehicule [immatriculation=" + immatriculation + ", capacite=" + capacite
-                + ", disponible=" + dispo + ", kilometrage=" + kilometrage + " km]";
+        return (
+            "Vehicule [immatriculation=" +
+            immatriculation +
+            ", capacite=" +
+            capacite +
+            ", disponible=" +
+            dispo +
+            ", kilometrage=" +
+            kilometrage +
+            " km]"
+        );
     }
 }

@@ -1,3 +1,5 @@
+package src.bibliotheque.model;
+
 import java.time.LocalDate;
 
 public class Amende {
@@ -38,23 +40,59 @@ public class Amende {
         this.payee = true;
     }
 
-    public int getId() { return id; }
-    public double getMontant() { return montant; }
-    public boolean estPayee() { return payee; }
-    public LocalDate getDateCreation() { return dateCreation; }
-    public Emprunt getEmprunt() { return emprunt; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
-    public void setMontant(double montant) { this.montant = montant; }
-    public void setPayee(boolean payee) { this.payee = payee; }
-    public void setDateCreation(LocalDate dateCreation) { this.dateCreation = dateCreation; }
-    public void setEmprunt(Emprunt emprunt) { this.emprunt = emprunt; }
+    public double getMontant() {
+        return montant;
+    }
+
+    public boolean estPayee() {
+        return payee;
+    }
+
+    public LocalDate getDateCreation() {
+        return dateCreation;
+    }
+
+    public Emprunt getEmprunt() {
+        return emprunt;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMontant(double montant) {
+        this.montant = montant;
+    }
+
+    public void setPayee(boolean payee) {
+        this.payee = payee;
+    }
+
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public void setEmprunt(Emprunt emprunt) {
+        this.emprunt = emprunt;
+    }
 
     @Override
     public String toString() {
-        return "Amende{id=" + id +
-               ", montant=" + montant + " FCFA" +
-               ", payee=" + payee +
-               ", dateCreation=" + dateCreation + "}";
+        return (
+            "Amende{id=" +
+            id +
+            ", montant=" +
+            montant +
+            " FCFA" +
+            ", payee=" +
+            payee +
+            ", dateCreation=" +
+            dateCreation +
+            "}"
+        );
     }
 }

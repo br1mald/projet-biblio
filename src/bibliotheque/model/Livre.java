@@ -1,3 +1,5 @@
+package src.bibliotheque.model;
+
 import java.util.ArrayList;
 
 public class Livre {
@@ -27,6 +29,21 @@ public class Livre {
         this.genre = genre;
         this.anneePublication = anneePublication;
         this.exemplaires = exemplaires;
+    }
+
+    public Livre(
+        String isbn,
+        String titre,
+        String auteur,
+        String genre,
+        int anneePublication
+    ) {
+        this.isbn = isbn;
+        this.titre = titre;
+        this.auteur = auteur;
+        this.genre = genre;
+        this.anneePublication = anneePublication;
+        this.exemplaires = new ArrayList<>();
     }
 
     public void setIsbn(String isbn) {

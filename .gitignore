@@ -1,0 +1,10 @@
+*.class
+out/
+bin/
+
+.classpath
+.project
+.settings/
+.idea/
+.vscode/
+.zed/

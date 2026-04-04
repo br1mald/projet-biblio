@@ -1,3 +1,5 @@
+package src.bibliotheque.model;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +24,9 @@ public class Caisse {
         }
 
         if (amende.estPayee()) {
-            throw new IllegalStateException("Cette amende a déjà été payée et encaissée !");
+            throw new IllegalStateException(
+                "Cette amende a déjà été payée et encaissée !"
+            );
         }
 
         amende.payer();
@@ -30,19 +34,33 @@ public class Caisse {
         amendesEncaissees.add(amende);
     }
 
-    public int getId() { return id; }
-    public double getSolde() { return solde; }
+    public int getId() {
+        return id;
+    }
+
+    public double getSolde() {
+        return solde;
+    }
 
     public List<Amende> getAmendesEncaissees() {
         return Collections.unmodifiableList(amendesEncaissees);
     }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
-        return "Caisse{id=" + id +
-               ", solde=" + solde + " FCFA" +
-               ", amendesEncaissees=" + amendesEncaissees.size() + "}";
+        return (
+            "Caisse{id=" +
+            id +
+            ", solde=" +
+            solde +
+            " FCFA" +
+            ", amendesEncaissees=" +
+            amendesEncaissees.size() +
+            "}"
+        );
     }
 }

@@ -1,3 +1,5 @@
+package src.bibliotheque.model;
+
 import java.time.LocalDate;
 
 public class Livraison {
