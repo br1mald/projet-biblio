@@ -59,10 +59,8 @@ public ArrayList<Emprunt> setEmprunts(ArrayList<Emprunt> emprunts) {
     return this.emprunts;
 }
 
-public Emprunt emprunter(Exemplaire ex){
-    // Pour l'instant, on crée un objet vide pour ne pas bloquer la compilation
-    // en attente de la classe Emprunt
-    Emprunt e = new Emprunt();
+public Emprunt emprunter(Exemplaire ex, int idEmprunt,int dateEmprunt) {
+    Emprunt e = new Emprunt(idEmprunt, this, ex, dateEmprunt);
     this.emprunts.add(e);
     return e;
 }
