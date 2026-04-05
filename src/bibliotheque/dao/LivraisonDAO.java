@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import src.bibliotheque.model.Exemplaire;
 import src.bibliotheque.model.Livraison;
 
 public class LivraisonDAO {
@@ -35,6 +36,25 @@ public class LivraisonDAO {
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 livraison.setId(rs.getInt(1));
+            }
+
+            if (
+                livraison.getExemplairesALivrer() != null &&
+                !livraison.getExemplairesALivrer().isEmpty()
+            ) {
+                String sqlJunction =
+                    "INSERT INTO livraison_exemplaire (livraison_id, exemplaire_id) VALUES (?, ?)";
+                try (
+                    PreparedStatement psJunction = conn.prepareStatement(
+                        sqlJunction
+                    )
+                ) {
+                    for (Exemplaire exp : livraison.getExemplairesALivrer()) {
+                        psJunction.setInt(1, livraison.getId());
+                        psJunction.setInt(2, exp.getId());
+                        psJunction.executeUpdate();
+                    }
+                }
             }
         }
     }

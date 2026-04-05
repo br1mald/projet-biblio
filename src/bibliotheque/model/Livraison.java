@@ -90,6 +90,14 @@ public class Livraison {
         this.distanceKm = distanceKm;
     }
 
+    public List<Exemplaire> getExemplairesALivrer() {
+        return this.exemplairesALivrer;
+    }
+
+    public void setExemplairesALivrer(List<Exemplaire> exemplairesALivrer) {
+        this.exemplairesALivrer = exemplairesALivrer;
+    }
+
     public void effectuer() throws IllegalStateException {
         for (Exemplaire exemplaireALivrer : exemplairesALivrer) {
             if (exemplaireALivrer.getAnnexe() != this.annexeOrigine) {

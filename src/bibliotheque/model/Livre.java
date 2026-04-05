@@ -117,4 +117,26 @@ public class Livre {
     public int getNbExemplaires() {
         return this.exemplaires.size();
     }
+
+    @Override
+    public String toString() {
+        return (
+            "Livre [ISBN=" +
+            isbn +
+            ", Titre='" +
+            titre +
+            '\'' +
+            ", Auteur='" +
+            auteur +
+            '\'' +
+            ", Genre='" +
+            genre +
+            '\'' +
+            ", Année=" +
+            anneePublication +
+            ", Exemplaires=" +
+            getNbExemplaires() +
+            "]"
+        );
+    }
 }

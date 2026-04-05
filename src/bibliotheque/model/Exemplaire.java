@@ -109,6 +109,8 @@ public class Exemplaire {
             dispo +
             ", livre=" +
             titrelivre +
+            ", annexe=" +
+            annexe.getNom() +
             "]"
         );
     }

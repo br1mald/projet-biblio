@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import src.bibliotheque.dao.*;
 import src.bibliotheque.model.*;
 import src.bibliotheque.model.Exemplaire.EtatExemplaire;
@@ -29,7 +30,7 @@ public class Main {
                 "Les Misérables",
                 "Victor Hugo",
                 "Drame",
-                1820 // date incorrecte, modifier plus tard?
+                1820 // date incorrecte
             );
             livreDAO.ajouter(livre);
 
@@ -56,6 +57,14 @@ public class Main {
                 livre,
                 ann2
             );
+
+            livre.setExemplaires(
+                new ArrayList<Exemplaire>(List.of(ex1, ex2, ex3))
+            );
+
+            ann1.setExemplaires(new ArrayList<Exemplaire>(List.of(ex1, ex2)));
+            ann2.setExemplaires(new ArrayList<Exemplaire>(List.of(ex3)));
+
             exemplaireDAO.ajouter(ex1);
             exemplaireDAO.ajouter(ex2);
             exemplaireDAO.ajouter(ex3);
@@ -83,13 +92,30 @@ public class Main {
 
             emprunt.setDateRetourPrevue(LocalDate.now().minusDays(5)); // On modifie la date de retour prévue pour simuler un retard
             empruntDAO.ajouter(emprunt);
+            System.out.println(
+                "État de l'exemplaire juste après l'emprunt: " + ex2.toString()
+            );
+            System.out.println("\n--- TEST DE SÉCURITÉ ---");
+            try {
+                System.out.println(
+                    "Tentative d'emprunt d'un exemplaire indisponible"
+                );
+                Emprunt empruntInvalide = new Emprunt(2, membre, ex2, 5);
+                empruntDAO.ajouter(empruntInvalide);
+            } catch (IllegalStateException e) {
+                System.out.println(
+                    "Le système détecte l'incohérence et bloque l'action: " +
+                        e.getMessage()
+                );
+            }
+            System.out.println("\n------------------------");
 
             // Le membre retourne le livre
             Amende amendeGeneree = empruntDAO.retournerLivre(emprunt.getId());
             if (amendeGeneree != null) {
                 // Si l'amende est correctement générée on affiche le montant
                 System.out.println(
-                    "RETOUR: L'exemplaire a été ramené avec un retard de 5 jours, une amende de " +
+                    "\nRETOUR: L'exemplaire a été ramené avec un retard de 5 jours, une amende de " +
                         amendeGeneree.getMontant() +
                         " FCFA est générée."
                 );
@@ -104,16 +130,27 @@ public class Main {
                 );
                 caisse = caisseDAO.trouverParId(1);
                 System.out.println("Nouveau solde: " + caisse.getSolde());
+                amendeGeneree.setPayee(true);
             }
+            System.out.println("\n------------------------");
 
             // L'exemplaire rendu est en mauvais état
             emprunt.getExemplaire().setEtat(EtatExemplaire.ABIME);
+            emprunt.getExemplaire().setDisponible(true);
             exemplaireDAO.modifier(emprunt.getExemplaire());
             System.out.println(
-                "CONSERVATION: L'exemplaire est abîmé, son état est mis à jour dans le système."
+                "\nCONSERVATION: L'exemplaire est abîmé, son état est mis à jour dans le système."
+            );
+
+            System.out.println(
+                "État de l'exemplaire après retour: " + ex2.toString()
             );
 
             // On livre un exemplaire du livre à l'Annexe Nord qui n'en a plus qu'un
+            System.out.println("\n--- PRÉPARATION DE LA LIVRAISON ---");
+            System.out.println("Origine prévue : " + ann1.toString());
+            System.out.println("Destination prévue : " + ann2.toString());
+
             List<Exemplaire> exemplairesALivrer = new ArrayList<Exemplaire>();
             exemplairesALivrer.add(ex1);
             Livraison liv1 = new Livraison(
@@ -125,10 +162,13 @@ public class Main {
                 exemplairesALivrer,
                 2.5
             );
+            System.out.println(
+                "État du véhicule avant livraison: " + vehicule.toString()
+            );
             liv1.effectuer();
             livraisonDAO.ajouter(liv1);
             System.out.println(
-                "LIVRAISON: Départ d'un véhicule pour transférer l'exemplaire ID 1 vers l'Annexe Nord"
+                "\nLIVRAISON: Départ d'un véhicule pour transférer l'exemplaire ID 1 vers l'Annexe Nord"
             );
             // L'exemplaire ne se trouve plus au même endroit donc on le réflète dans la db
             exemplairesALivrer.forEach(exemplaire -> {
@@ -141,6 +181,52 @@ public class Main {
                     );
                 }
             });
+            vehiculeDAO.modifier(vehicule); // mettre à jour le kilométrage
+            System.out.println(
+                "État du véhicule après livraison: " + vehicule.toString()
+            );
+            System.out.println("\n------------------------");
+
+            ann1.getExemplaires().remove(ex1);
+            ann2.getExemplaires().add(ex1);
+
+            System.out.println(
+                "\nÉtat de l'annexe origine après livraison: \n" +
+                    ann1.toString()
+            );
+            System.out.println(
+                "\nÉtat de l'annexe destination après livraison: \n" +
+                    ann2.toString()
+            );
+            System.out.println("\n------------------------");
+
+            System.out.println(
+                "\nCorrection de l'année de publication du livre..."
+            );
+            System.out.println(
+                "État du livre avant modification: " + livre.toString()
+            );
+            livre.setAnneePublication(1862);
+            livreDAO.modifier(livre);
+            System.out.println();
+            System.out.println(
+                "État du livre après modification: " + livre.toString()
+            );
+
+            System.out.println("\n--- PAUSE ---");
+            System.out.println(
+                "La simulation est terminée. Vous pouvez vérifier l'état de la base de données."
+            );
+            System.out.println(
+                "Appuyez sur 'Entrée' pour supprimer toutes les données générées et quitter le programme..."
+            );
+
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine(); // Le programme se met en pause ici et attend que l'utilisateur appuie sur Entrée
+            scanner.close();
+
+            System.out.println("\n--- NETTOYAGE ---");
+            System.out.println("Suppression des données en cours...");
 
             // On supprime tout ce qui a été créé
             livraisonDAO.supprimer(liv1.getId());
@@ -156,6 +242,8 @@ public class Main {
             annexeDAO.supprimer(ann2.getId());
 
             membreDAO.supprimer(membre.getId());
+
+            System.out.println("Base de données nettoyée. Fin du programme.");
         } catch (SQLException e) {
             System.out.println("Erreur");
             e.printStackTrace();

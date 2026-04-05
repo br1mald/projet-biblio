@@ -1,5 +1,6 @@
 package src.bibliotheque.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Annexe {
@@ -8,7 +9,9 @@ public class Annexe {
     private String nom;
     private List<Exemplaire> exemplaires;
 
-    public Annexe() {}
+    public Annexe() {
+        this.exemplaires = new ArrayList<>();
+    }
 
     public Annexe(int id, String nom, List<Exemplaire> exemplaires) {
         this.id = id;
@@ -19,6 +22,7 @@ public class Annexe {
     public Annexe(int id, String nom) {
         this.id = id;
         this.nom = nom;
+        this.exemplaires = new ArrayList<>();
     }
 
     public int getId() {
@@ -43,5 +47,22 @@ public class Annexe {
 
     public void setExemplaires(List<Exemplaire> exemplaires) {
         this.exemplaires = exemplaires;
+    }
+
+    @Override
+    public String toString() {
+        int nbExemplaire = (this.exemplaires != null)
+            ? this.exemplaires.size()
+            : 0;
+        return (
+            "Annexe [id=" +
+            id +
+            ", Nom='" +
+            nom +
+            '\'' +
+            ", Nombre d'exemplaires=" +
+            nbExemplaire +
+            "]"
+        );
     }
 }
