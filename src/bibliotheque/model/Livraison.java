@@ -1,6 +1,8 @@
 package src.bibliotheque.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Livraison {
 
@@ -9,21 +11,29 @@ public class Livraison {
     private Vehicule vehicule;
     private Annexe annexeOrigine;
     private Annexe annexeDestination;
+    private List<Exemplaire> exemplairesALivrer;
+    private Double distanceKm;
 
-    public Livraison() {}
+    public Livraison() {
+        this.exemplairesALivrer = new ArrayList<>();
+    }
 
     public Livraison(
         int id,
         LocalDate dateLivraison,
         Vehicule vehicule,
         Annexe annexeOrigine,
-        Annexe annexeDestination
+        Annexe annexeDestination,
+        List<Exemplaire> exemplairesALivrer,
+        Double distanceKm
     ) {
         this.id = id;
         this.dateLivraison = dateLivraison;
         this.vehicule = vehicule;
         this.annexeOrigine = annexeOrigine;
         this.annexeDestination = annexeDestination;
+        this.exemplairesALivrer = exemplairesALivrer;
+        this.distanceKm = distanceKm;
     }
 
     public int getId() {
@@ -66,24 +76,42 @@ public class Livraison {
         this.annexeDestination = annexeDestination;
     }
 
-    public static void effectuer() {
-        Annexe annexeOrigine = new Annexe();
-        Annexe annexeDestination = new Annexe();
-        annexeOrigine.setNom("Origine");
-        annexeDestination.setNom("Destination");
+    public Double getDistanceKm() {
+        return this.distanceKm;
+    }
 
-        Livraison livraison = new Livraison();
-        livraison.setAnnexeOrigine(annexeOrigine);
-        livraison.setAnnexeDestination(annexeDestination);
-        livraison.setDateLivraison(LocalDate.now());
+    public void setDistanceKm(Double distanceKm) {
+        this.distanceKm = distanceKm;
+    }
 
-        System.out.println(
-            "Livraison effectuée entre " +
-                livraison.getAnnexeOrigine() +
-                " et " +
-                livraison.getAnnexeDestination() +
-                ". Date: " +
-                livraison.getDateLivraison()
-        );
+    public void effectuer() throws IllegalStateException {
+        for (Exemplaire exemplaireALivrer : exemplairesALivrer) {
+            if (exemplaireALivrer.getAnnexe() != this.annexeOrigine) {
+                // Incohérence
+                throw new IllegalStateException(
+                    "L'exemplaire " +
+                        exemplaireALivrer.getId() +
+                        " ne se trouve pas à l'annexe d'origine " +
+                        this.annexeOrigine.getNom()
+                );
+            }
+        }
+
+        if (
+            this.vehicule.estDisponible() &&
+            this.vehicule.getCapacite() >= exemplairesALivrer.size()
+        ) {
+            for (Exemplaire exemplaireALivrer : exemplairesALivrer) {
+                exemplaireALivrer.setAnnexe(annexeDestination);
+            }
+            vehicule.setKilometrage(
+                vehicule.getKilometrage() + this.getDistanceKm()
+            );
+        } else {
+            // Incohérence
+            throw new IllegalStateException(
+                "Le véhicule n'est pas disponible ou sa capacité est insuffisante"
+            );
+        }
     }
 }

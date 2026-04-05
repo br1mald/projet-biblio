@@ -14,6 +14,7 @@ public class Exemplaire {
     private EtatExemplaire etat;
     private boolean disponible;
     private Livre livre;
+    private Annexe annexe;
 
     // Constructeurs
 
@@ -24,11 +25,13 @@ public class Exemplaire {
     }
 
     // Constructeur avec paramètres
-    public Exemplaire(int id, EtatExemplaire etat, Livre livre) {
+    public Exemplaire(int id, EtatExemplaire etat, Livre livre, Annexe annexe) {
         this.id = id;
         this.etat = etat;
         this.livre = livre;
-        this.disponible = true; // par défaut, un exemplaire créé est disponible
+        this.disponible = true;
+        // par défaut, un exemplaire créé est disponible
+        this.annexe = annexe;
     }
 
     // Appelée quand un membre emprunte l'exemplaire
@@ -83,6 +86,14 @@ public class Exemplaire {
 
     public void setLivre(Livre livre) {
         this.livre = livre;
+    }
+
+    public Annexe getAnnexe() {
+        return this.annexe;
+    }
+
+    public void setAnnexe(Annexe annexe) {
+        this.annexe = annexe;
     }
 
     // Affichage d'un exemplaire

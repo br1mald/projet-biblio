@@ -84,3 +84,17 @@ CREATE TABLE livraison (
     FOREIGN KEY (annexe_origine_id) REFERENCES annexe(id) ON DELETE CASCADE,
     FOREIGN KEY (annexe_destination_id) REFERENCES annexe(id) ON DELETE CASCADE
 );
+
+-- Temporaire, pour réfléter les modifications faites au niveau de la db, il faudra utiliser un script qui crée tout correctement plus tard
+ALTER TABLE exemplaire ADD COLUMN annexe_id INT;
+ALTER TABLE exemplaire ADD FOREIGN KEY (annexe_id) REFERENCES annexe(id) ON DELETE SET NULL;
+
+ALTER TABLE livraison ADD COLUMN distance_km DOUBLE NOT NULL;
+
+CREATE TABLE livraison_exemplaire (
+    livraison_id INT NOT NULL,
+    exemplaire_id INT NOT NULL,
+    PRIMARY KEY (livraison_id, exemplaire_id),
+    FOREIGN KEY (livraison_id) REFERENCES livraison(id) ON DELETE CASCADE,
+    FOREIGN KEY (exemplaire_id) REFERENCES exemplaire(id) ON DELETE CASCADE
+);
