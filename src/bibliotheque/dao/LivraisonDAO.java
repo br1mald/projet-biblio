@@ -15,11 +15,14 @@ public class LivraisonDAO {
     // CREATE
     public void ajouter(Livraison livraison) throws SQLException {
         String sql =
-            "INSERT INTO livraison (date_livraison, immatriculation_vehicule, id_annexe_origine, id_annexe_destination, distance_km) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO livraison (date_livraison, vehicule_immatriculation, annexe_origine_id, annexe_destination_id, distance_km) VALUES (?, ?, ?, ?, ?)";
 
         try (
             Connection conn = ConnexionBD.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)
+            PreparedStatement ps = conn.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
         ) {
             ps.setDate(1, Date.valueOf(livraison.getDateLivraison()));
             ps.setString(2, livraison.getVehicule().getImmatriculation());
@@ -28,6 +31,11 @@ public class LivraisonDAO {
             ps.setDouble(5, livraison.getDistanceKm());
 
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                livraison.setId(rs.getInt(1));
+            }
         }
     }
 
@@ -67,9 +75,11 @@ public class LivraisonDAO {
         }
         return livraisons;
     }
+
     //UPDATE
     public void modifier(Livraison livraison) throws SQLException {
-        String sql = "UPDATE livraison SET date_livraison = ?, immatriculation_vehicule = ?, id_annexe_origine = ?, id_annexe_destination = ?, distance_km = ? WHERE id = ?";
+        String sql =
+            "UPDATE livraison SET date_livraison = ?, immatriculation_vehicule = ?, id_annexe_origine = ?, id_annexe_destination = ?, distance_km = ? WHERE id = ?";
 
         try (
             Connection conn = ConnexionBD.getConnection();
@@ -85,6 +95,7 @@ public class LivraisonDAO {
             ps.executeUpdate();
         }
     }
+
     //DELETE
     public void supprimer(int id) throws SQLException {
         String sql = "DELETE FROM livraison WHERE id = ?";
@@ -97,5 +108,4 @@ public class LivraisonDAO {
             ps.executeUpdate();
         }
     }
-
 }

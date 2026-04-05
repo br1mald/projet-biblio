@@ -31,6 +31,7 @@ public class Main {
                 "Drame",
                 1820 // date incorrecte, modifier plus tard?
             );
+            livreDAO.ajouter(livre);
 
             Annexe ann1 = new Annexe(1, "Bibliothèque Centrale");
             Annexe ann2 = new Annexe(2, "Annexe Nord");
@@ -94,12 +95,15 @@ public class Main {
                 );
 
                 // Le membre paie l'amende
-                Caisse caisse = new Caisse(1);
+                Caisse caisse = caisseDAO.trouverParId(1);
+                System.out.println("Solde initial: " + caisse.getSolde());
                 // caisseDAO.ajouter(caisse); il faut une méthode ajouter pour caisseDAO
                 caisseDAO.encaisserAmende(caisse, amendeGeneree);
                 System.out.println(
                     "CAISSE: L'amende a été payée. Le solde de la caisse est mis à jour."
                 );
+                caisse = caisseDAO.trouverParId(1);
+                System.out.println("Nouveau solde: " + caisse.getSolde());
             }
 
             // L'exemplaire rendu est en mauvais état

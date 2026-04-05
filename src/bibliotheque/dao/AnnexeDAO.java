@@ -16,10 +16,18 @@ public class AnnexeDAO {
         String sql = "INSERT INTO annexe (nom) VALUES (?)";
         try (
             Connection conn = ConnexionBD.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
         ) {
             ps.setString(1, annexe.getNom());
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                annexe.setId(rs.getInt(1));
+            }
         }
     }
 

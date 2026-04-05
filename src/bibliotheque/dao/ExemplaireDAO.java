@@ -18,7 +18,10 @@ public class ExemplaireDAO {
             "INSERT INTO exemplaire (etat, disponible, livre_isbn, annexe_id) VALUES (?, ?, ?, ?)";
         try (
             Connection conn = ConnexionBD.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)
+            PreparedStatement ps = conn.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            )
         ) {
             ps.setString(1, exemplaire.getEtat().name());
             ps.setBoolean(2, exemplaire.isDisponible());
@@ -30,6 +33,11 @@ public class ExemplaireDAO {
                 ps.setNull(4, java.sql.Types.INTEGER);
             }
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                exemplaire.setId(rs.getInt(1));
+            }
         }
     }
 

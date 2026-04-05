@@ -18,6 +18,12 @@ public class Caisse {
         this.amendesEncaissees = new ArrayList<>();
     }
 
+    public Caisse(int id, double solde) {
+        this.id = id;
+        this.solde = solde;
+        this.amendesEncaissees = new ArrayList<>();
+    }
+
     public void encaisserAmende(Amende amende) {
         if (amende == null) {
             throw new IllegalArgumentException("Amende invalide (null).");

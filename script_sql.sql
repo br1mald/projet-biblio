@@ -98,3 +98,6 @@ CREATE TABLE livraison_exemplaire (
     FOREIGN KEY (livraison_id) REFERENCES livraison(id) ON DELETE CASCADE,
     FOREIGN KEY (exemplaire_id) REFERENCES exemplaire(id) ON DELETE CASCADE
 );
+
+-- Création de la caisse principale de la bibliothèque
+INSERT INTO caisse (id, solde) VALUES (1, 0.0);

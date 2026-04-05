@@ -1,42 +1,50 @@
 package src.bibliotheque.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import src.bibliotheque.model.Membre;
 import src.bibliotheque.model.Emprunt;
-import java.sql.Date;
+import src.bibliotheque.model.Membre;
 
 public class MembreDAO {
 
-    // CREATE 
+    // CREATE
     public void ajouter(Membre membre) throws SQLException {
-        
-        String sql = "INSERT INTO membre (nom, prenom, adresse, date_inscription) VALUES (?, ?, ?, ?)";
-        
+        String sql =
+            "INSERT INTO membre (nom, prenom, adresse, date_inscription) VALUES (?, ?, ?, ?)";
+
         try (
             Connection conn = ConnexionBD.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)
+            PreparedStatement ps = conn.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            )
         ) {
             ps.setString(1, membre.getNom());
             ps.setString(2, membre.getPrenom());
             ps.setString(3, membre.getAdresse());
-            
+
             ps.setDate(4, Date.valueOf(membre.getDateInscription()));
-            
+
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                membre.setId(rs.getInt(1));
+            }
         }
     }
 
-    // READ 
+    // READ
     public List<Membre> listerTous() throws SQLException {
         List<Membre> membres = new ArrayList<>();
         String sql = "SELECT * FROM membre";
-        
+
         try (
             Connection conn = ConnexionBD.getConnection();
             Statement stmt = conn.createStatement();
@@ -48,7 +56,7 @@ public class MembreDAO {
                     rs.getString("nom"),
                     rs.getString("prenom"),
                     rs.getString("adresse"),
-                    rs.getDate("date_inscription").toLocalDate(), 
+                    rs.getDate("date_inscription").toLocalDate(),
                     new ArrayList<Emprunt>() // Liste d'emprunts vide au départ
                 );
                 membres.add(m);
@@ -57,9 +65,10 @@ public class MembreDAO {
         return membres;
     }
 
-    // UPDATE 
+    // UPDATE
     public void modifier(Membre membreModifie) throws SQLException {
-        String sql = "UPDATE membre SET nom = ?, prenom = ?, adresse = ? WHERE id = ?";
+        String sql =
+            "UPDATE membre SET nom = ?, prenom = ?, adresse = ? WHERE id = ?";
 
         try (
             Connection conn = ConnexionBD.getConnection();
@@ -74,7 +83,7 @@ public class MembreDAO {
         }
     }
 
-    // DELETE 
+    // DELETE
     public void supprimer(int id) throws SQLException {
         String sql = "DELETE FROM membre WHERE id = ?";
         try (
