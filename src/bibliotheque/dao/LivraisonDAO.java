@@ -67,4 +67,35 @@ public class LivraisonDAO {
         }
         return livraisons;
     }
+    //UPDATE
+    public void modifier(Livraison livraison) throws SQLException {
+        String sql = "UPDATE livraison SET date_livraison = ?, immatriculation_vehicule = ?, id_annexe_origine = ?, id_annexe_destination = ?, distance_km = ? WHERE id = ?";
+
+        try (
+            Connection conn = ConnexionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            ps.setDate(1, Date.valueOf(livraison.getDateLivraison()));
+            ps.setString(2, livraison.getVehicule().getImmatriculation());
+            ps.setInt(3, livraison.getAnnexeOrigine().getId());
+            ps.setInt(4, livraison.getAnnexeDestination().getId());
+            ps.setDouble(5, livraison.getDistanceKm());
+            ps.setInt(6, livraison.getId());
+
+            ps.executeUpdate();
+        }
+    }
+    //DELETE
+    public void supprimer(int id) throws SQLException {
+        String sql = "DELETE FROM livraison WHERE id = ?";
+
+        try (
+            Connection conn = ConnexionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
 }
