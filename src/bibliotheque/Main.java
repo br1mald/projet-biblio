@@ -199,6 +199,35 @@ public class Main {
                     ann2.toString()
             );
             System.out.println("\n------------------------");
+            System.out.println("\n--- TEST DE SÉCURITÉ ---");
+            try {
+                System.out.println(
+                    "Tentative de livraison d'un exemplaire indisponible"
+                );
+
+                ex2.setDisponible(false);
+                Livraison livraisonInvalide = new Livraison(
+                    2,
+                    LocalDate.now(),
+                    vehicule,
+                    ann1,
+                    ann2,
+                    exemplairesALivrer,
+                    2.5
+                );
+                livraisonInvalide.setExemplairesALivrer(
+                    new ArrayList<Exemplaire>(List.of(ex2))
+                );
+                livraisonInvalide.effectuer();
+                livraisonDAO.ajouter(livraisonInvalide);
+            } catch (IllegalStateException e) {
+                System.out.println(
+                    "Le système détecte l'incohérence et bloque l'action: " +
+                        e.getMessage()
+                );
+                ex2.setDisponible(true);
+            }
+            System.out.println("\n------------------------");
 
             System.out.println(
                 "\nCorrection de l'année de publication du livre..."

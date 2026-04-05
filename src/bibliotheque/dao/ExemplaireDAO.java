@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import src.bibliotheque.model.Exemplaire;
-import src.bibliotheque.model.Livre;
 
 public class ExemplaireDAO {
 
@@ -62,10 +61,7 @@ public class ExemplaireDAO {
                 String livreIsbn = rs.getString("livre_isbn");
                 ex.setAnnexe(new AnnexeDAO().trouverParId(annexeId));
 
-                List<Livre> livres = new LivreDAO().listerTous(); // Il faudrait ajouter une fonction pour trouver par isbn
-                livres.forEach(livre -> {
-                    if (livre.getIsbn().equals(livreIsbn)) ex.setLivre(livre);
-                });
+                ex.setLivre(new LivreDAO().trouverParIsbn(livreIsbn));
 
                 exemplaires.add(ex);
             }

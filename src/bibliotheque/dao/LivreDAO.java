@@ -53,6 +53,29 @@ public class LivreDAO {
         return livres;
     }
 
+    public Livre trouverParIsbn(String isbn) throws SQLException {
+        String sql = "SELECT * FROM livre WHERE isbn = ?";
+        try (
+            Connection conn = ConnexionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setString(1, isbn);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Livre livre = new Livre(
+                    rs.getString("isbn"),
+                    rs.getString("titre"),
+                    rs.getString("auteur"),
+                    rs.getString("genre"),
+                    rs.getInt("annee_publication")
+                );
+                return livre;
+            }
+            return null;
+        }
+    }
+
     // UPDATE
     public void modifier(Livre livreModifie) throws SQLException {
         String sql =

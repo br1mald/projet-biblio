@@ -109,6 +109,13 @@ public class Livraison {
                         this.annexeOrigine.getNom()
                 );
             }
+            if (!exemplaireALivrer.isDisponible()) {
+                throw new IllegalStateException(
+                    "L'exemplaire " +
+                        exemplaireALivrer.getId() +
+                        " n'est pas disponible."
+                );
+            }
         }
 
         if (
