@@ -16,6 +16,11 @@ public class Annexe {
         this.exemplaires = exemplaires;
     }
 
+    public Annexe(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
+
     public int getId() {
         return this.id;
     }
