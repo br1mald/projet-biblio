@@ -16,16 +16,16 @@ Le projet suit une architecture en couches :
 - **`dao`** : Contient les classes d'accès aux données (Data Access Objects) gérant la persistance via JDBC (`LivreDAO`, `EmpruntDAO`, etc.).
 - **`Main.java`** : Contient le scénario principal simulant une utilisation réaliste du système.
 
-## ⚙️ Prérequis
+## Prérequis
 - **Java** (JDK 8 ou supérieur)
-- **MySQL** (Serveur local comme MAMP, XAMPP, ou WAMP)
+- **MySQL** 
 - Le driver JDBC MySQL (`mysql-connector-j.jar`) situé dans le dossier `lib/`.
 
-## 🚀 Installation et Exécution
+## Installation et Exécution
 
 **1. Configuration de la base de données**
 - Ouvrez votre client MySQL (ex: phpMyAdmin).
-- Créez une base de données nommée `bibliotheque`.
+- Créez une base de données nommée `bibliotheque`. (optionnel)
 - Exécutez l'intégralité du script SQL fourni : `script_sql.sql`. *(Ce script créera toutes les tables nécessaires et insérera la caisse initiale).*
 
 **2. Configuration de la connexion (Optionnel)**
