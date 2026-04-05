@@ -49,6 +49,10 @@ public class Caisse {
     public void setId(int id) {
         this.id = id;
     }
+   
+    public void setSolde(double solde) {
+    this.solde = solde;
+}
 
     @Override
     public String toString() {
