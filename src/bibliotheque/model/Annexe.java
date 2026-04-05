@@ -20,7 +20,7 @@ public class Annexe {
         this.id = id;
     }
 
-    public String getNom(String nom) {
+    public String getNom() {
         return this.nom;
     }
 
