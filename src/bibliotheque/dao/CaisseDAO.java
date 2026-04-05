@@ -1,23 +1,75 @@
 package src.bibliotheque.dao;
 
 import java.sql.*;
-import src.bibliotheque.model.*;
+import java.util.ArrayList;
+import java.util.List;
+import src.bibliotheque.model.Caisse;
+import src.bibliotheque.model.Amende;
 
 public class CaisseDAO {
 
-    public void encaisserAmende(Caisse caisse, Amende amende) throws SQLException {
+    // CREATE 
+    public void ajouter(Caisse caisse) throws SQLException {
+        
+        String sql = "INSERT INTO caisse (solde) VALUES (?)";
+        try (Connection conn = ConnexionBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, caisse.getSolde());
+            ps.executeUpdate();
+        }
+    }
 
-        if (!amende.estPayee()) {
-            throw new IllegalStateException("Amende non payée !");
+    // READ 
+    public Caisse trouverParId(int id) throws SQLException {
+        String sql = "SELECT * FROM caisse WHERE id = ?";
+        try (Connection conn = ConnexionBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Caisse c = new Caisse(rs.getInt("id"));
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Caisse> listerToutes() throws SQLException {
+        List<Caisse> caisses = new ArrayList<>();
+        String sql = "SELECT * FROM caisse";
+        try (Connection conn = ConnexionBD.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                caisses.add(new Caisse(rs.getInt("id")));
+            }
+        }
+        return caisses;
+    }
+
+    // Delete
+    public void supprimer(int id) throws SQLException {
+        String sql = "DELETE FROM caisse WHERE id = ?";
+        try (Connection conn = ConnexionBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    public void encaisserAmende(Caisse caisse, Amende amende) throws SQLException {
+        
+        if (amende.estPayee()) {
+            throw new IllegalStateException("Amende déjà payée !");
         }
 
         Connection conn = null;
-
         try {
             conn = ConnexionBD.getConnection();
-            conn.setAutoCommit(false);
+            conn.setAutoCommit(false); 
 
-            // update caisse
+            // 1. Update solde caisse
             String sql1 = "UPDATE caisse SET solde = solde + ? WHERE id = ?";
             try (PreparedStatement ps = conn.prepareStatement(sql1)) {
                 ps.setDouble(1, amende.getMontant());
@@ -25,16 +77,15 @@ public class CaisseDAO {
                 ps.executeUpdate();
             }
 
-            // lier amende
-            String sql2 = "UPDATE amende SET caisse_id=? WHERE id=?";
+            // 2. Lier amende à la caisse
+            String sql2 = "UPDATE amende SET caisse_id = ? WHERE id = ?";
             try (PreparedStatement ps = conn.prepareStatement(sql2)) {
                 ps.setInt(1, caisse.getId());
                 ps.setInt(2, amende.getId());
                 ps.executeUpdate();
             }
 
-            conn.commit();
-
+            conn.commit(); 
         } catch (Exception e) {
             if (conn != null) conn.rollback();
             throw e;
