@@ -7,14 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import src.bibliotheque.model.EtatExemplaire;
 import src.bibliotheque.model.Exemplaire;
+import src.bibliotheque.model.Livre;
 
 public class ExemplaireDAO {
 
     // CREATE
     public void ajouter(Exemplaire exemplaire) throws SQLException {
-        String sql = "INSERT INTO exemplaire (etat, disponible, livre_isbn, annexe_id) VALUES (?, ?, ?, ?)";
+        String sql =
+            "INSERT INTO exemplaire (etat, disponible, livre_isbn, annexe_id) VALUES (?, ?, ?, ?)";
         try (
             Connection conn = ConnexionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)
@@ -22,7 +23,12 @@ public class ExemplaireDAO {
             ps.setString(1, exemplaire.getEtat().name());
             ps.setBoolean(2, exemplaire.isDisponible());
             ps.setString(3, exemplaire.getLivre().getIsbn());
-            ps.setInt(4, exemplaire.getAnnexe().getId());
+            if (exemplaire.getAnnexe() != null) {
+                // Pour éviter une NullPointerException
+                ps.setInt(4, exemplaire.getAnnexe().getId());
+            } else {
+                ps.setNull(4, java.sql.Types.INTEGER);
+            }
             ps.executeUpdate();
         }
     }
@@ -39,8 +45,20 @@ public class ExemplaireDAO {
             while (rs.next()) {
                 Exemplaire ex = new Exemplaire();
                 ex.setId(rs.getInt("id"));
-                ex.setEtat(EtatExemplaire.valueOf(rs.getString("etat")));
+                ex.setEtat(
+                    Exemplaire.EtatExemplaire.valueOf(rs.getString("etat"))
+                );
                 ex.setDisponible(rs.getBoolean("disponible"));
+
+                int annexeId = rs.getInt("annexe_id");
+                String livreIsbn = rs.getString("livre_isbn");
+                ex.setAnnexe(new AnnexeDAO().trouverParId(annexeId));
+
+                List<Livre> livres = new LivreDAO().listerTous(); // Il faudrait ajouter une fonction pour trouver par isbn
+                livres.forEach(livre -> {
+                    if (livre.getIsbn().equals(livreIsbn)) ex.setLivre(livre);
+                });
+
                 exemplaires.add(ex);
             }
         }
@@ -49,15 +67,28 @@ public class ExemplaireDAO {
 
     // UPDATE
     public void modifier(Exemplaire exemplaire) throws SQLException {
-        String sql = "UPDATE exemplaire SET etat = ?, disponible = ?, annexe_id = ? WHERE id = ?";
+        String sql =
+            "UPDATE exemplaire SET etat = ?, disponible = ?, livre_isbn = ?, annexe_id = ? WHERE id = ?";
         try (
             Connection conn = ConnexionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
             ps.setString(1, exemplaire.getEtat().name());
             ps.setBoolean(2, exemplaire.isDisponible());
-            ps.setInt(3, exemplaire.getAnnexe().getId());
-            ps.setInt(4, exemplaire.getId());
+
+            if (exemplaire.getLivre() != null) {
+                ps.setString(3, exemplaire.getLivre().getIsbn());
+            } else {
+                ps.setNull(3, java.sql.Types.VARCHAR);
+            }
+
+            if (exemplaire.getAnnexe() != null) {
+                ps.setInt(4, exemplaire.getAnnexe().getId());
+            } else {
+                ps.setNull(4, java.sql.Types.INTEGER);
+            }
+
+            ps.setInt(5, exemplaire.getId());
             ps.executeUpdate();
         }
     }

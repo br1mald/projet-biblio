@@ -13,7 +13,7 @@ public class AnnexeDAO {
 
     // CREATE
     public void ajouter(Annexe annexe) throws SQLException {
-        String sql = "INSERT INTO annexe (nom) VALUES ?";
+        String sql = "INSERT INTO annexe (nom) VALUES (?)";
         try (
             Connection conn = ConnexionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -38,6 +38,21 @@ public class AnnexeDAO {
             }
         }
         return annexes;
+    }
+
+    public Annexe trouverParId(int id) throws SQLException {
+        String sql = "SELECT * FROM annexe WHERE id = ?";
+        try (
+            Connection conn = ConnexionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Annexe(rs.getInt("id"), rs.getString("nom"));
+            }
+            return null;
+        }
     }
 
     // UPDATE

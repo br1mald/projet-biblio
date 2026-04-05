@@ -12,7 +12,9 @@ public class Membre {
     private LocalDate dateInscription;
     private ArrayList<Emprunt> emprunts;
 
-    public Membre() {}
+    public Membre() {
+        this.emprunts = new ArrayList<>();
+    }
 
     public Membre(
         int id,
@@ -78,8 +80,8 @@ public class Membre {
         this.emprunts = emprunts;
     }
 
-    public Emprunt emprunter(Exemplaire ex, int idEmprunt, int dateEmprunt) {
-        Emprunt e = new Emprunt(idEmprunt, this, ex, dateEmprunt);
+    public Emprunt emprunter(Exemplaire ex, int idEmprunt, int dureeJours) {
+        Emprunt e = new Emprunt(idEmprunt, this, ex, dureeJours);
         this.emprunts.add(e);
         return e;
     }

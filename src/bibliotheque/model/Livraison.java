@@ -18,6 +18,12 @@ public class Livraison {
         this.exemplairesALivrer = new ArrayList<>();
     }
 
+    public Livraison(int id, LocalDate dateLivraison, Double distanceKm) {
+        this.id = id;
+        this.dateLivraison = dateLivraison;
+        this.distanceKm = distanceKm;
+    }
+
     public Livraison(
         int id,
         LocalDate dateLivraison,

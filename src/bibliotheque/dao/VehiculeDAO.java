@@ -13,7 +13,8 @@ public class VehiculeDAO {
 
     // CREATE
     public void ajouter(Vehicule vehicule) throws SQLException {
-        String sql = "INSERT INTO vehicule (immatriculation, capacite, disponible, kilometrage) VALUES (?, ?, ?, ?)";
+        String sql =
+            "INSERT INTO vehicule (immatriculation, capacite, disponible, kilometrage) VALUES (?, ?, ?, ?)";
         try (
             Connection conn = ConnexionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)
@@ -48,9 +49,32 @@ public class VehiculeDAO {
         return vehicules;
     }
 
+    public Vehicule trouverParImm(String immatriculation) throws SQLException {
+        String sql = "SELECT * FROM vehicule WHERE immatriculation = ?";
+        try (
+            Connection conn = ConnexionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setString(1, immatriculation);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Vehicule vehicule = new Vehicule(
+                    rs.getString("immatriculation"),
+                    rs.getInt("capacite"),
+                    rs.getBoolean("disponible"),
+                    rs.getDouble("kilometrage")
+                );
+                return vehicule;
+            }
+            return null;
+        }
+    }
+
     // UPDATE
     public void modifier(Vehicule vehicule) throws SQLException {
-        String sql = "UPDATE vehicule SET capacite = ?, disponible = ?, kilometrage = ? WHERE immatriculation = ?";
+        String sql =
+            "UPDATE vehicule SET capacite = ?, disponible = ?, kilometrage = ? WHERE immatriculation = ?";
         try (
             Connection conn = ConnexionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)

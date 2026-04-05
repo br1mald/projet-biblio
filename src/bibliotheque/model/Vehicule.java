@@ -17,6 +17,18 @@ public class Vehicule {
     }
 
     // Constructeur avec paramètres
+    public Vehicule(
+        String immatriculation,
+        int capacite,
+        Boolean disponible,
+        double kilometrage
+    ) {
+        this.immatriculation = immatriculation;
+        this.capacite = capacite;
+        this.kilometrage = kilometrage;
+        this.disponible = disponible; // un véhicule tout juste créé est disponible
+    }
+
     public Vehicule(String immatriculation, int capacite, double kilometrage) {
         this.immatriculation = immatriculation;
         this.capacite = capacite;

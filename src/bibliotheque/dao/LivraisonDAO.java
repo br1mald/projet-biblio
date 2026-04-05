@@ -15,7 +15,7 @@ public class LivraisonDAO {
     // CREATE
     public void ajouter(Livraison livraison) throws SQLException {
         String sql =
-            "INSERT INTO livraison (date_livraison, immatriculation_vehicule, id_annexe_origine, id_annexe_destination) VALUES (?, ?, ?, ?)";
+            "INSERT INTO livraison (date_livraison, immatriculation_vehicule, id_annexe_origine, id_annexe_destination, distance_km) VALUES (?, ?, ?, ?, ?)";
 
         try (
             Connection conn = ConnexionBD.getConnection();
@@ -25,6 +25,7 @@ public class LivraisonDAO {
             ps.setString(2, livraison.getVehicule().getImmatriculation());
             ps.setInt(3, livraison.getAnnexeOrigine().getId());
             ps.setInt(4, livraison.getAnnexeDestination().getId());
+            ps.setDouble(5, livraison.getDistanceKm());
 
             ps.executeUpdate();
         }
@@ -44,12 +45,23 @@ public class LivraisonDAO {
                 Livraison liv = new Livraison(
                     rs.getInt("id"),
                     rs.getDate("date_livraison").toLocalDate(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ); // TODO: modifier plus tard pour mettre les bons attributs
+                    rs.getDouble("distance_km")
+                );
+                String immatriculation = rs.getString(
+                    "immatriculation_vehicule"
+                );
+                int annexeOrigineId = rs.getInt("id_annexe_origine");
+                int annexeDestinationId = rs.getInt("id_annexe_destination");
+                liv.setAnnexeOrigine(
+                    new AnnexeDAO().trouverParId(annexeOrigineId)
+                );
+                liv.setAnnexeDestination(
+                    new AnnexeDAO().trouverParId(annexeDestinationId)
+                );
+                liv.setVehicule(
+                    new VehiculeDAO().trouverParImm(immatriculation)
+                );
+
                 livraisons.add(liv);
             }
         }
